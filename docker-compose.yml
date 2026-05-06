@@ -1,0 +1,151 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: qrcode_share_db
+    environment:
+      POSTGRES_USER: qrcode
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-Qwer314159}
+      POSTGRES_DB: qrcode_share
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qrcode -d qrcode_share"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - backend
+    sysctls:
+      - net.core.somaxconn=65535
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+
+  migrate:
+    image: postgres:16-alpine
+    container_name: qrcode_share_migrate
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: qrcode
+      PGPASSWORD: ${DB_PASSWORD:-Qwer314159}
+      PGDATABASE: qrcode_share
+    volumes:
+      - ./migrations:/migrations:ro
+    entrypoint: >
+      /bin/sh -c "
+        echo 'Waiting for PostgreSQL...';
+        until pg_isready -h $$PGHOST -p $$PGPORT -U $$PGUSER -d $$PGDATABASE; do
+          sleep 1;
+        done;
+        echo 'Running migrations...';
+        for f in /migrations/*.sql; do
+          echo \"Applying: $$f\";
+          psql -f \"$$f\";
+          if [ $$? -ne 0 ]; then
+            echo \"Migration failed: $$f\";
+            exit 1;
+          fi;
+        done;
+        echo 'All migrations applied successfully';
+      "
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - backend
+
+  backend:
+    build:
+      context: .
+      dockerfile: qrcode_share_backend/Dockerfile
+    container_name: qrcode_share_backend
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_URL: postgres://qrcode:${DB_PASSWORD:-Qwer314159}@postgres:5432/qrcode_share
+      RUST_LOG: ${RUST_LOG:-info,qrcode_share_backend=debug}
+      MAX_CHANNELS: ${MAX_CHANNELS:-5000}
+      MAX_MESSAGES_PER_CHANNEL: ${MAX_MESSAGES_PER_CHANNEL:-300}
+      MAX_MESSAGES_PER_MINUTE: ${MAX_MESSAGES_PER_MINUTE:-60}
+      MAX_CONNECTIONS: ${MAX_CONNECTIONS:-500}
+      MAX_CONNECTIONS_PER_CHANNEL: ${MAX_CONNECTIONS_PER_CHANNEL:-50}
+      MESSAGE_TTL_SECONDS: ${MESSAGE_TTL_SECONDS:-3600}
+      CHANNEL_TTL_DAYS: ${CHANNEL_TTL_DAYS:-30}
+      CLEANUP_INTERVAL_SECONDS: ${CLEANUP_INTERVAL_SECONDS:-120}
+      HEARTBEAT_INTERVAL_SECONDS: ${HEARTBEAT_INTERVAL_SECONDS:-30}
+      BROADCAST_BUFFER_SIZE: ${BROADCAST_BUFFER_SIZE:-256}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      WX_APPID: ${WX_APPID:-}
+      WX_SECRET: ${WX_SECRET:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - backend
+    sysctls:
+      - net.core.somaxconn=65535
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1800M
+
+  frontend-builder:
+    build:
+      context: ./qrcode_share_fronted
+      dockerfile: Dockerfile
+    container_name: qrcode_share_frontend_builder
+    volumes:
+      - frontend_build:/output
+    restart: "no"
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: qrcode_share_nginx
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - frontend_build:/usr/share/nginx/html:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend-builder:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - backend
+      - frontend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+networks:
+  backend:
+    driver: bridge
+    internal: false
+  frontend:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  frontend_build:

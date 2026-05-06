@@ -1,0 +1,17 @@
+.git/
+node_modules/
+target/
+*.md
+!migrations/
+.env
+.env.*
+*.log
+.vscode/
+.idea/
+qrcode_share_fronted/node_modules/
+qrcode_share_backend/target/
+qrcode_share_backend/.env
+qrcode_share_backend/.env.test
+qrcode_share_backend/.sqlx/
+qrcode_share_backend/test_*.txt
+docs/

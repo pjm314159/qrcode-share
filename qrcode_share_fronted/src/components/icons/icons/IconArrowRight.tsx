@@ -1,0 +1,10 @@
+import { createIconWithPaths } from '../Icon';
+
+export const IconArrowRight = createIconWithPaths(
+  [
+    'M5 12h14',
+    'M12 5l7 7-7 7',
+  ],
+  'IconArrowRight',
+  { fill: false }
+);
