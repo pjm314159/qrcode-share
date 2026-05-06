@@ -1,7 +1,7 @@
 import type { Message } from '@/types';
 import { extractDomain, formatRemainingTime } from '@/utils/helpers';
 import { useInterval } from '@/hooks/useTimer';
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 interface MessageCardProps {
   message: Message;

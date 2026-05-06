@@ -14,13 +14,13 @@ Real-time link sharing through QR codes. Create a channel, scan or paste a link,
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 19, TypeScript 6, Vite 8, Tailwind CSS 4 |
-| State | Zustand 5 |
-| Backend | Rust, Axum 0.7, Tokio |
-| Database | PostgreSQL 16 |
-| Deployment | Docker Compose |
+| Layer      | Technology                                     |
+|------------|------------------------------------------------|
+| Frontend   | React 19, TypeScript 6, Vite 8, Tailwind CSS 4 |
+| State      | Zustand 5                                      |
+| Backend    | Rust, Axum 0.7, Tokio                          |
+| Database   | PostgreSQL 16                                  |
+| Deployment | Docker Compose                                 |
 
 ## Quick Start
 
@@ -83,15 +83,15 @@ qrcode_share/
 
 ### REST
 
-| Method | Path | Description |
-|---|---|---|
-| POST | `/api/channels` | Create channel |
-| GET | `/api/channels/:id` | Get channel |
-| GET | `/api/channels` | List channels |
-| DELETE | `/api/channels/:id` | Delete channel |
-| POST | `/api/channels/:id/messages` | Send message |
-| GET | `/api/channels/:id/messages` | Get messages |
-| GET | `/api/system/stats` | System stats |
+| Method | Path                         | Description    |
+|--------|------------------------------|----------------|
+| POST   | `/api/channels`              | Create channel |
+| GET    | `/api/channels/:id`          | Get channel    |
+| GET    | `/api/channels`              | List channels  |
+| DELETE | `/api/channels/:id`          | Delete channel |
+| POST   | `/api/channels/:id/messages` | Send message   |
+| GET    | `/api/channels/:id/messages` | Get messages   |
+| GET    | `/api/system/stats`          | System stats   |
 
 ### WebSocket
 
@@ -101,18 +101,18 @@ Connect to `ws://host/ws/channel/{id}?password={optional}` to receive messages i
 
 All configuration is via environment variables. Copy `.env.example` to `.env` and customize:
 
-| Variable | Default         | Description |
-|---|-----------------|---|
-| `DB_PASSWORD` | `your-password` | PostgreSQL password |
-| `PORT` | `3000`          | Backend port |
-| `FRONTEND_PORT` | `80`            | Nginx port |
-| `MAX_CHANNELS` | `5000`          | Maximum channels |
-| `MAX_MESSAGES_PER_CHANNEL` | `300`           | Messages per channel |
-| `MESSAGE_TTL_SECONDS` | `3600`          | Message lifetime |
-| `MAX_CONNECTIONS` | `500`           | Max WebSocket connections |
-| `CORS_ORIGINS` | `*`             | Allowed origins |
-| `WX_APPID` | -               | WeChat App ID (optional) |
-| `WX_SECRET` | -               | WeChat App Secret (optional) |
+| Variable                   | Default         | Description                  |
+|----------------------------|-----------------|------------------------------|
+| `DB_PASSWORD`              | `your-password` | PostgreSQL password          |
+| `PORT`                     | `3000`          | Backend port                 |
+| `FRONTEND_PORT`            | `80`            | Nginx port                   |
+| `MAX_CHANNELS`             | `5000`          | Maximum channels             |
+| `MAX_MESSAGES_PER_CHANNEL` | `300`           | Messages per channel         |
+| `MESSAGE_TTL_SECONDS`      | `3600`          | Message lifetime             |
+| `MAX_CONNECTIONS`          | `500`           | Max WebSocket connections    |
+| `CORS_ORIGINS`             | `*`             | Allowed origins              |
+| `WX_APPID`                 | -               | WeChat App ID (optional)     |
+| `WX_SECRET`                | -               | WeChat App Secret (optional) |
 
 ## Testing
 
@@ -138,17 +138,17 @@ cargo clippy                         # Lint
 
 ## Documentation
 
-| Document | Path |
-|---|---|
-| Frontend Summary | `docs/en/fronted.md` |
-| Design System | `docs/DESIGN.md` |
-| Image Prompts | `docs/en/images.md` |
-| API Reference | `docs/en/api.md` |
-| Database Schema | `docs/en/database.md` |
-| Performance Guide | `docs/en/performance_improve.md` |
-| Deployment Guide | `docs/en/configure_and_deploy.md` |
-| Task Plan | `docs/en/task.md` |
-| Backend Tests | `docs/en/test.md` |
+| Document          | Path                              |
+|-------------------|-----------------------------------|
+| Frontend Summary  | `docs/en/fronted.md`              |
+| Design System     | `docs/DESIGN.md`                  |
+| Image Prompts     | `docs/en/images.md`               |
+| API Reference     | `docs/en/api.md`                  |
+| Database Schema   | `docs/en/database.md`             |
+| Performance Guide | `docs/en/performance_improve.md`  |
+| Deployment Guide  | `docs/en/configure_and_deploy.md` |
+| Task Plan         | `docs/en/task.md`                 |
+| Backend Tests     | `docs/en/test.md`                 |
 
 ## License
 

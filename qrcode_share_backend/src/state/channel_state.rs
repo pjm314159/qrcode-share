@@ -102,7 +102,7 @@ impl ChannelState {
     /// Add a message to the channel
     pub fn add_message(&self, message: Arc<Message>) {
         if self.messages.len() >= MAX_MESSAGES_PER_CHANNEL {
-            let mut oldest: Option<(CompactString, chrono::DateTime<Utc>)> = None;
+            let mut oldest: Option<(CompactString, DateTime<Utc>)> = None;
             for entry in self.messages.iter() {
                 let msg = entry.value();
                 match &oldest {

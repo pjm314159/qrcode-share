@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useChannelStore } from '@/stores/channelStore';
-import { ChannelCard } from './ChannelCard';
+import { ChannelCard } from '@/components';
 import { Button } from '@/components/ui';
 import { IconEmpty, IconChevronLeft, IconArrowRight } from '@/components/icons';
 import type { Channel } from '@/types';

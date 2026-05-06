@@ -177,7 +177,7 @@ mod tests {
 
     #[test]
     fn test_cache_line_alignment() {
-        assert_eq!(std::mem::size_of::<CacheLine<AtomicU64>>(), 64);
+        assert_eq!(size_of::<CacheLine<AtomicU64>>(), 64);
     }
 
     #[test]

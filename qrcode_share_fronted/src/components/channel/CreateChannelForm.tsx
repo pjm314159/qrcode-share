@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button, Input, Card } from '@/components/ui';
 import { IconChevronLeft } from '@/components/icons';
 import type { CreateChannelRequest, Channel } from '@/types';

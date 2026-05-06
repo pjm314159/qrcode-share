@@ -84,8 +84,8 @@ describe('ChannelStore', () => {
         message: 'Create failed',
       });
 
-      await expect(
-        useChannelStore.getState().createChannel({ name: 'Test' })
+      expect(
+          useChannelStore.getState().createChannel({name: 'Test'})
       ).rejects.toBeDefined();
 
       const state = useChannelStore.getState();

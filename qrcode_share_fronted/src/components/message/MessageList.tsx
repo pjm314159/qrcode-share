@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useMessageStore } from '@/stores/messageStore';
-import { MessageCard } from './MessageCard';
+import { MessageCard } from '@/components';
 import { Button } from '@/components/ui';
 import { IconEmpty } from '@/components/icons';
 

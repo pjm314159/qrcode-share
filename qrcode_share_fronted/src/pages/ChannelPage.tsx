@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { LinkWarning, Loading } from '@/components';
 import { ChatMessageList } from '@/components/message/ChatMessageList';

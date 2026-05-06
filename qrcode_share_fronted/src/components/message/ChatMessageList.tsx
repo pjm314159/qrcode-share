@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { useMessageStore } from '@/stores/messageStore';
 import { IconEmpty } from '@/components/icons';
-import { ChatMessageCard } from './ChatMessageCard';
+import { ChatMessageCard } from '@/components';
 
 interface ChatMessageListProps {
   channelId: string;

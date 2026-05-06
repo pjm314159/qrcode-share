@@ -345,7 +345,7 @@ mod tests {
         let state = create_test_app_state();
         let request = create_test_request("Test Channel");
 
-        let result = create_channel(axum::extract::State(state), HeaderMap::new(), axum::Json(request)).await;
+        let result = create_channel(State(state), HeaderMap::new(), Json(request)).await;
 
         assert!(result.is_ok());
         let (status, response) = result.unwrap();
@@ -363,13 +363,13 @@ mod tests {
         let create_req = create_test_request("Test");
 
         let create_result =
-            create_channel(axum::extract::State(state.clone()), HeaderMap::new(), axum::Json(create_req))
+            create_channel(State(state.clone()), HeaderMap::new(), Json(create_req))
                 .await
                 .unwrap();
         let channel_id = create_result.1 .0.data.unwrap().id;
 
         let get_result =
-            get_channel(axum::extract::State(state), axum::extract::Path(channel_id), HeaderMap::new()).await;
+            get_channel(State(state), Path(channel_id), HeaderMap::new()).await;
 
         assert!(get_result.is_ok());
         let response = get_result.unwrap();
@@ -383,8 +383,8 @@ mod tests {
         let state = create_test_app_state();
 
         let result = get_channel(
-            axum::extract::State(state),
-            axum::extract::Path("nonexistent".to_string()),
+            State(state),
+            Path("nonexistent".to_string()),
             HeaderMap::new(),
         )
         .await;
@@ -402,7 +402,7 @@ mod tests {
 
         for i in 0..3 {
             let request = create_test_request(&format!("Channel {}", i));
-            let _ = create_channel(axum::extract::State(state.clone()), HeaderMap::new(), axum::Json(request)).await;
+            let _ = create_channel(State(state.clone()), HeaderMap::new(), Json(request)).await;
         }
 
         let query = ListChannelsQuery {
@@ -412,7 +412,7 @@ mod tests {
             search: None,
         };
 
-        let result = list_channels(axum::extract::State(state), axum::extract::Query(query)).await;
+        let result = list_channels(State(state), Query(query)).await;
 
         let response = result.0;
         assert!(response.success);
@@ -427,14 +427,14 @@ mod tests {
         let create_req = create_test_request("To Delete");
 
         let create_result =
-            create_channel(axum::extract::State(state.clone()), HeaderMap::new(), axum::Json(create_req))
+            create_channel(State(state.clone()), HeaderMap::new(), Json(create_req))
                 .await
                 .unwrap();
         let channel_id = create_result.1 .0.data.unwrap().id;
 
         let delete_result = delete_channel(
-            axum::extract::State(state.clone()),
-            axum::extract::Path(channel_id.clone()),
+            State(state.clone()),
+            Path(channel_id.clone()),
         )
         .await;
 
@@ -443,7 +443,7 @@ mod tests {
         assert!(response.0.data.unwrap().deleted);
 
         let get_result =
-            get_channel(axum::extract::State(state), axum::extract::Path(channel_id), HeaderMap::new()).await;
+            get_channel(State(state), Path(channel_id), HeaderMap::new()).await;
         assert!(get_result.is_err());
     }
 
@@ -452,8 +452,8 @@ mod tests {
         let state = create_test_app_state();
 
         let result = delete_channel(
-            axum::extract::State(state),
-            axum::extract::Path("nonexistent".to_string()),
+            State(state),
+            Path("nonexistent".to_string()),
         )
         .await;
 
@@ -505,7 +505,7 @@ mod tests {
         let create_req = create_test_request("Original Name");
 
         let create_result =
-            create_channel(axum::extract::State(state.clone()), HeaderMap::new(), axum::Json(create_req))
+            create_channel(State(state.clone()), HeaderMap::new(), Json(create_req))
                 .await
                 .unwrap();
         let channel_id = create_result.1 .0.data.unwrap().id;
@@ -520,9 +520,9 @@ mod tests {
         };
 
         let update_result = update_channel(
-            axum::extract::State(state),
-            axum::extract::Path(channel_id),
-            axum::Json(update_req),
+            State(state),
+            Path(channel_id),
+            Json(update_req),
         )
         .await;
 

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { SmartQRScanner } from '@/components/qrcode';
 import { Input } from '@/components/ui';
 import { useMessageStore } from '@/stores/messageStore';

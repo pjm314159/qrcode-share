@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Input, Button } from '@/components/ui';
 import { IconClose } from '@/components/icons';
 

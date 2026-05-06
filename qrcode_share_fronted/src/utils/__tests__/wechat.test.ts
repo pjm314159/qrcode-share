@@ -121,7 +121,7 @@ describe('wechat utils', () => {
       vi.stubGlobal('fetch', fetchMock);
 
       const { initWxSdk } = await import('../wechat');
-      await expect(initWxSdk()).rejects.toThrow('WeChat JS-SDK is not available');
+      expect(initWxSdk()).rejects.toThrow('WeChat JS-SDK is not available');
     });
   });
 
@@ -129,13 +129,13 @@ describe('wechat utils', () => {
     it('rejects in non-WeChat browser', async () => {
       mockUserAgent('Chrome/120.0.0.0');
       const { scanQRCode } = await import('../wechat');
-      await expect(scanQRCode()).rejects.toThrow('Not in WeChat browser');
+      expect(scanQRCode()).rejects.toThrow('Not in WeChat browser');
     });
 
     it('rejects when SDK not initialized', async () => {
       mockUserAgent('MicroMessenger/8.0.33');
       const { scanQRCode } = await import('../wechat');
-      await expect(scanQRCode()).rejects.toThrow('WeChat JS-SDK not initialized');
+      expect(scanQRCode()).rejects.toThrow('WeChat JS-SDK not initialized');
     });
   });
 

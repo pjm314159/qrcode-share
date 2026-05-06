@@ -205,7 +205,7 @@ WX_APPID=wx1234567890abcdef
 WX_SECRET=your_wechat_app_secret_here
 ```
 
-6. Restart the backend:
+1. Restart the backend:
 
 ```bash
 docker compose up -d --build backend

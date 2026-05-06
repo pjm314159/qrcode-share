@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { isWechatBrowser, getWechatVersion } from '@/utils/wechat';
 
 export function WechatProvider({ children }: { children: React.ReactNode }) {

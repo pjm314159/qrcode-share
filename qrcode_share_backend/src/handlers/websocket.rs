@@ -239,7 +239,7 @@ fn broadcast_subscriber_update(channel_id: &str, count: usize, app_state: &AppSt
         let result = channel
             .broadcast_tx
             .send(ChannelEvent::SubscriberUpdate { count });
-        tracing::info!(
+        info!(
             "Broadcasting subscriber update: {} -> {} (receivers={}, result={:?})",
             channel_id,
             count,

@@ -13,8 +13,8 @@ export type WsStateHandler = (state: ConnectionState) => void;
 
 export class WebSocketClient {
   private ws: WebSocket | null = null;
-  private channelId: string;
-  private password: string | undefined;
+  private readonly channelId: string;
+  private readonly password: string | undefined;
   private heartbeatTimer: ReturnType<typeof setInterval> | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   private reconnectAttempts = 0;

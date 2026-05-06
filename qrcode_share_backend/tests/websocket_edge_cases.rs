@@ -218,7 +218,7 @@ async fn test_websocket_message_ordering() {
     // Verify we received all messages
     assert_eq!(
         received_messages.len(),
-        num_messages as usize,
+        num_messages,
         "Expected {} messages, got {}",
         num_messages,
         received_messages.len()
