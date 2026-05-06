@@ -1,9 +1,9 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { useConnectionStore } from '@/stores/connectionStore';
-import { useMessageStore } from '@/stores/messageStore';
-import { useSettingsStore } from '@/stores/settingsStore';
-import type { WsServerMessage } from '@/types';
-import { wsMessageToMessage } from '@/types/ws';
+import {useCallback, useEffect, useRef} from 'react';
+import {useConnectionStore} from '@/stores/connectionStore';
+import {useMessageStore} from '@/stores/messageStore';
+import {useSettingsStore} from '@/stores/settingsStore';
+import type {WsServerMessage} from '@/types';
+import {wsMessageToMessage} from '@/types/ws';
 
 export function useWebSocket(channelId: string | null, password?: string) {
   const client = useConnectionStore((s) => s.client);
@@ -17,10 +17,10 @@ export function useWebSocket(channelId: string | null, password?: string) {
   const autoOpenRef = useRef(useSettingsStore.getState().autoOpenReceivedLinks);
 
   useEffect(() => {
-    const unsub = useSettingsStore.subscribe((state) => {
+
+    return useSettingsStore.subscribe((state) => {
       autoOpenRef.current = state.autoOpenReceivedLinks;
     });
-    return unsub;
   }, []);
 
   const channelIdRef = useRef(channelId);
@@ -39,7 +39,10 @@ export function useWebSocket(channelId: string | null, password?: string) {
   useEffect(() => {
     if (!client) return;
 
-    const unsubscribe = client.onMessage((message: WsServerMessage) => {
+
+
+
+    return client.onMessage((message: WsServerMessage) => {
       switch (message.type) {
         case 'connected':
           setSubscriberCount(message.subscriber_count);
@@ -62,8 +65,6 @@ export function useWebSocket(channelId: string | null, password?: string) {
           break;
       }
     });
-
-    return unsubscribe;
   }, [client, addMessage, setSubscriberCount]);
 
   const reconnect = useCallback(() => {
