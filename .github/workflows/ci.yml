@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: [dev, master]
+  pull_request:
+    branches: [dev, master]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  frontend:
+    name: Frontend (lint / test / build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: qrcode_share_fronted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: qrcode_share_fronted/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Unit tests
+        run: pnpm test -- --run
+
+      - name: Build
+        run: pnpm build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: qrcode_share_fronted/dist
+          retention-days: 7
+
+  backend:
+    name: Backend (fmt / clippy / test)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: qrcode_share_backend
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: qrcode
+          POSTGRES_PASSWORD: yourPassword
+          POSTGRES_DB: qrcode_share
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U qrcode -d qrcode_share"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://qrcode:yourPassword@localhost:5432/qrcode_share
+      PGPASSWORD: yourPassword
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: qrcode_share_backend
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Clippy
+        run: cargo clippy --all-targets
+
+      - name: Unit tests
+        run: cargo test --lib --bins
+
+      - name: Apply database migrations
+        run: |
+          for f in ../migrations/*.sql; do
+            echo "Applying $f"
+            psql -h localhost -U qrcode -d qrcode_share -v ON_ERROR_STOP=1 -f "$f"
+          done
+
+      - name: Integration tests
+        run: |
+          cargo test --test integration_tests \
+                     --test websocket_tests \
+                     --test database_pool_tests \
+                     --test migration_tests \
+                     --test rate_limit_edge_cases \
+                     --test security_tests \
+                     --test websocket_edge_cases
+
+  docker:
+    name: Docker image build
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build backend image
+        run: docker build -t qrcode-share-backend:ci -f qrcode_share_backend/Dockerfile .
+
+      - name: Build frontend image
+        run: docker build -t qrcode-share-frontend:ci -f qrcode_share_fronted/Dockerfile qrcode_share_fronted
