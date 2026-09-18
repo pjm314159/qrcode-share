@@ -106,7 +106,10 @@ impl AppState {
             }
         };
 
-        tracing::info!("WeChat JS-SDK: Verifying configuration with APPID={}", appid);
+        tracing::info!(
+            "WeChat JS-SDK: Verifying configuration with APPID={}",
+            appid
+        );
 
         match Self::fetch_access_token(&appid, &secret).await {
             Ok(token) => {
@@ -307,7 +310,8 @@ impl AppState {
             let prev = counter.fetch_sub(1, Ordering::Relaxed);
             if prev <= 1 {
                 drop(counter);
-                self.ip_channel_counts.remove_if(ip, |_, v| v.load(Ordering::Relaxed) == 0);
+                self.ip_channel_counts
+                    .remove_if(ip, |_, v| v.load(Ordering::Relaxed) == 0);
             }
         }
     }
@@ -351,9 +355,8 @@ impl AppState {
     }
 
     pub fn cleanup_stale_ip_counts(&self) {
-        self.ip_channel_counts.retain(|_, count| {
-            count.load(Ordering::Relaxed) > 0
-        });
+        self.ip_channel_counts
+            .retain(|_, count| count.load(Ordering::Relaxed) > 0);
     }
 }
 
@@ -600,7 +603,10 @@ mod tests {
         let max_connections = config.max_connections;
         let state = AppState::new(config);
 
-        assert_eq!(state.connection_semaphore.available_permits(), max_connections);
+        assert_eq!(
+            state.connection_semaphore.available_permits(),
+            max_connections
+        );
     }
 
     #[test]

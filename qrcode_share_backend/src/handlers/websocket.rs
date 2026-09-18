@@ -241,10 +241,7 @@ fn broadcast_subscriber_update(channel_id: &str, count: usize, app_state: &AppSt
             .send(ChannelEvent::SubscriberUpdate { count });
         info!(
             "Broadcasting subscriber update: {} -> {} (receivers={}, result={:?})",
-            channel_id,
-            count,
-            receiver_count,
-            result
+            channel_id, count, receiver_count, result
         );
     }
 }

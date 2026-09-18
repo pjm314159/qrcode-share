@@ -56,15 +56,21 @@ impl Metrics {
     }
 
     pub fn inc_messages_received(&self, count: u64) {
-        self.messages_received.value.fetch_add(count, Ordering::Relaxed);
+        self.messages_received
+            .value
+            .fetch_add(count, Ordering::Relaxed);
     }
 
     pub fn inc_connections(&self) {
-        self.active_connections.value.fetch_add(1, Ordering::Relaxed);
+        self.active_connections
+            .value
+            .fetch_add(1, Ordering::Relaxed);
     }
 
     pub fn dec_connections(&self) {
-        self.active_connections.value.fetch_sub(1, Ordering::Relaxed);
+        self.active_connections
+            .value
+            .fetch_sub(1, Ordering::Relaxed);
     }
 
     pub fn inc_channels(&self) {

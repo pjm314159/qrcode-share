@@ -5,7 +5,9 @@
 use std::net::SocketAddr;
 use std::sync::Arc;
 
-use qrcode_share_backend::{build_router, start_cleanup_task, start_wechat_refresh_task, AppState, Config};
+use qrcode_share_backend::{
+    build_router, start_cleanup_task, start_wechat_refresh_task, AppState, Config,
+};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 /// Initialize the tracing subscriber for structured logging

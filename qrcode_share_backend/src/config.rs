@@ -187,10 +187,7 @@ mod tests {
     #[test]
     fn test_wechat_config_empty_string_is_none() {
         temp_env::with_vars(
-            vec![
-                ("WX_APPID", Some("")),
-                ("WX_SECRET", Some("")),
-            ],
+            vec![("WX_APPID", Some("")), ("WX_SECRET", Some(""))],
             || {
                 let config = Config::from_env().unwrap();
                 assert_eq!(config.wx_appid, None, "Empty WX_APPID should be None");
@@ -232,10 +229,7 @@ mod tests {
     #[test]
     fn test_wechat_config_partial_is_none() {
         temp_env::with_vars(
-            vec![
-                ("WX_APPID", Some("wx1234567890")),
-                ("WX_SECRET", Some("")),
-            ],
+            vec![("WX_APPID", Some("wx1234567890")), ("WX_SECRET", Some(""))],
             || {
                 let config = Config::from_env().unwrap();
                 assert_eq!(config.wx_appid, Some("wx1234567890".to_string()));

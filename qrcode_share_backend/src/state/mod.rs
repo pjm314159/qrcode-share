@@ -8,7 +8,7 @@ mod channel_state;
 mod metrics;
 mod rate_limiter;
 
-pub use app_state::{AppState, WechatTokenCache, WechatStatus};
+pub use app_state::{AppState, WechatStatus, WechatTokenCache};
 pub use channel_state::{ChannelEvent, ChannelState};
 pub use metrics::Metrics;
 pub use rate_limiter::RateLimiter;

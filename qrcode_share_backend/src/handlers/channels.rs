@@ -368,8 +368,7 @@ mod tests {
                 .unwrap();
         let channel_id = create_result.1 .0.data.unwrap().id;
 
-        let get_result =
-            get_channel(State(state), Path(channel_id), HeaderMap::new()).await;
+        let get_result = get_channel(State(state), Path(channel_id), HeaderMap::new()).await;
 
         assert!(get_result.is_ok());
         let response = get_result.unwrap();
@@ -432,18 +431,13 @@ mod tests {
                 .unwrap();
         let channel_id = create_result.1 .0.data.unwrap().id;
 
-        let delete_result = delete_channel(
-            State(state.clone()),
-            Path(channel_id.clone()),
-        )
-        .await;
+        let delete_result = delete_channel(State(state.clone()), Path(channel_id.clone())).await;
 
         assert!(delete_result.is_ok());
         let response = delete_result.unwrap();
         assert!(response.0.data.unwrap().deleted);
 
-        let get_result =
-            get_channel(State(state), Path(channel_id), HeaderMap::new()).await;
+        let get_result = get_channel(State(state), Path(channel_id), HeaderMap::new()).await;
         assert!(get_result.is_err());
     }
 
@@ -451,11 +445,7 @@ mod tests {
     async fn test_delete_channel_not_found() {
         let state = create_test_app_state();
 
-        let result = delete_channel(
-            State(state),
-            Path("nonexistent".to_string()),
-        )
-        .await;
+        let result = delete_channel(State(state), Path("nonexistent".to_string())).await;
 
         assert!(result.is_err());
         match result.unwrap_err() {
@@ -467,7 +457,10 @@ mod tests {
     #[test]
     fn test_extract_client_ip_x_forwarded_for() {
         let mut headers = HeaderMap::new();
-        headers.insert("x-forwarded-for", "203.0.113.1, 70.41.3.18".parse().unwrap());
+        headers.insert(
+            "x-forwarded-for",
+            "203.0.113.1, 70.41.3.18".parse().unwrap(),
+        );
         assert_eq!(extract_client_ip(&headers), "203.0.113.1");
     }
 
@@ -519,12 +512,7 @@ mod tests {
             teacher: None,
         };
 
-        let update_result = update_channel(
-            State(state),
-            Path(channel_id),
-            Json(update_req),
-        )
-        .await;
+        let update_result = update_channel(State(state), Path(channel_id), Json(update_req)).await;
 
         assert!(update_result.is_ok());
         let response = update_result.unwrap();

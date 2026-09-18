@@ -28,9 +28,7 @@ pub struct WechatStatusResponse {
     pub reason: Option<String>,
 }
 
-pub async fn get_wechat_status(
-    State(state): State<AppState>,
-) -> Json<WechatStatusResponse> {
+pub async fn get_wechat_status(State(state): State<AppState>) -> Json<WechatStatusResponse> {
     let status = state.wechat_status.read();
     Json(WechatStatusResponse {
         available: status.available,

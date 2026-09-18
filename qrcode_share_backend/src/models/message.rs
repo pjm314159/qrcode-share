@@ -1,4 +1,3 @@
-
 //! Message domain model
 //!
 //! Represents a QR code message shared in a channel.
