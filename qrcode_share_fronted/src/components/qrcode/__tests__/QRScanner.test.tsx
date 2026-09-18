@@ -66,12 +66,7 @@ describe('QRScanner', () => {
   it('calls stopScanner when overlay close button is clicked', async () => {
     render(<QRScanner onScan={vi.fn()} autoStart={true} />);
 
-    await waitFor(() => {
-      const overlayBtn = document.querySelector('[aria-label="Stop scanner"]') as HTMLElement;
-      expect(overlayBtn).toBeDefined();
-    });
-
-    const overlayBtn = document.querySelector('[aria-label="Stop scanner"]') as HTMLElement;
+    const overlayBtn = await screen.findByRole('button', { name: 'Stop scanner' });
     fireEvent.click(overlayBtn);
 
     await waitFor(() => {

@@ -56,6 +56,7 @@ describe('WechatScanner', () => {
     render(<WechatScanner onScan={onScan} />);
 
     const button = await screen.findByRole('button', { name: /Scan QR Code/ });
+    await waitFor(() => expect(button).toBeEnabled());
     fireEvent.click(button);
 
     await waitFor(() => {
@@ -72,6 +73,7 @@ describe('WechatScanner', () => {
     render(<WechatScanner onScan={vi.fn()} onError={onError} />);
 
     const button = await screen.findByRole('button', { name: /Scan QR Code/ });
+    await waitFor(() => expect(button).toBeEnabled());
     fireEvent.click(button);
 
     await waitFor(() => {
