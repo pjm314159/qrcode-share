@@ -1,2 +1,5 @@
-ignoredBuiltDependencies:
-  - esbuild
+# pnpm v11+ replaced onlyBuiltDependencies/ignoredBuiltDependencies with this map
+# (true = run lifecycle scripts, false = explicitly skip them).
+# esbuild's postinstall sets up its native binary, which vite needs at build time.
+allowBuilds:
+  esbuild: true
