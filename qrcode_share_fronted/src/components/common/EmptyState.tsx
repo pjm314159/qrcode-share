@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react';
+import { Picture } from './Picture';
 import { IMAGES } from '@/constants/images';
 
 interface EmptyStateProps {
@@ -32,8 +33,8 @@ export function EmptyState({
       ) : icon ? (
         icon
       ) : (
-        <img
-          src={IMAGES.emptyInbox}
+        <Picture
+          image={IMAGES.emptyInbox}
           alt=""
           width={320}
           height={240}

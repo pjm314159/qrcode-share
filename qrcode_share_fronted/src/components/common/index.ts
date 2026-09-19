@@ -1,4 +1,6 @@
 export { Loading, LoadingOverlay } from './Loading';
+export { Picture } from './Picture';
+export type { PictureProps } from './Picture';
 export { ErrorBoundary } from './ErrorBoundary';
 export { ErrorMessage } from './ErrorMessage';
 export { EmptyState } from './EmptyState';

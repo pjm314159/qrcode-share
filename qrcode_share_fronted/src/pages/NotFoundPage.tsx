@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui';
-import { DecorativeBlob } from '@/components/common';
+import { DecorativeBlob, Picture } from '@/components/common';
 import { IconBack } from '@/components/icons';
 import { IMAGES } from '@/constants/images';
 
@@ -13,8 +13,8 @@ export function NotFoundPage() {
       <DecorativeBlob color="#ffb084" size={160} x="70%" y="60%" opacity={0.06} />
 
       <div className="relative z-10">
-        <img
-          src={IMAGES.notFound}
+        <Picture
+          image={IMAGES.notFound}
           alt="Page not found"
           width={320}
           height={240}

@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Picture } from '@/components/common';
 import { IconPlus } from '@/components/icons';
 import { IMAGES } from '@/constants/images';
 
@@ -15,8 +16,8 @@ export function Layout({ children }: LayoutProps) {
       <header className="sticky top-0 z-10 border-b border-hairline bg-canvas/80 backdrop-blur-sm">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2 text-lg font-bold text-ink">
-            <img
-              src={IMAGES.logo}
+            <Picture
+              image={IMAGES.logo}
               alt="QRcode Share"
               width={28}
               height={28}
@@ -49,8 +50,8 @@ export function Layout({ children }: LayoutProps) {
       <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
 
       <footer className="relative border-t border-hairline bg-surface-soft py-6 text-center text-sm text-muted overflow-hidden">
-        <img
-          src={IMAGES.footerMountains}
+        <Picture
+          image={IMAGES.footerMountains}
           alt=""
           role="presentation"
           className="absolute bottom-0 left-0 w-full h-auto opacity-30 pointer-events-none"

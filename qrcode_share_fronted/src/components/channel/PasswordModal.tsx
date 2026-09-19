@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Input, Button } from '@/components/ui';
+import { Picture } from '@/components/common';
 import { IMAGES } from '@/constants/images';
 
 interface PasswordModalProps {
@@ -31,8 +32,8 @@ export function PasswordModal({ channelName, onSubmit, loading = false }: Passwo
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 backdrop-blur-sm">
       <div className="mx-4 w-full max-w-sm rounded-lg bg-canvas p-6 shadow-xl">
         <div className="flex justify-center mb-4">
-          <img
-            src={IMAGES.passwordLock}
+          <Picture
+            image={IMAGES.passwordLock}
             alt="Locked channel"
             width={120}
             height={90}

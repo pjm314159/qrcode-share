@@ -3,7 +3,7 @@ import { Card } from '@/components/ui';
 import { CreateChannelForm } from '@/components/channel';
 import { JoinChannelForm } from '@/components/channel';
 import { IconArrowRight } from '@/components/icons';
-import { DecorativeBlob } from '@/components/common';
+import { DecorativeBlob, Picture } from '@/components/common';
 import { IMAGES } from '@/constants/images';
 import type { Channel, CreateChannelRequest } from '@/types';
 import * as channelApi from '@/api/channels';
@@ -38,8 +38,8 @@ export function HomePage() {
           </p>
 
           <div className="mt-8">
-            <img
-              src={IMAGES.hero}
+            <Picture
+              image={IMAGES.hero}
               alt="QRcode Share illustration"
               width={400}
               height={300}
@@ -52,7 +52,7 @@ export function HomePage() {
       <section className="grid gap-6 md:grid-cols-2">
         <Card variant="feature-peach">
           <div className="flex items-center gap-3 mb-4">
-            <img src={IMAGES.featureCreate} alt="" width={48} height={48} className="rounded-lg" />
+            <Picture image={IMAGES.featureCreate} alt="" width={48} height={48} className="rounded-lg" />
             <h2 className="text-2xl font-bold">Create a Channel</h2>
           </div>
           <p className="mb-6 text-sm opacity-80">
@@ -80,7 +80,7 @@ export function HomePage() {
         <h2 className="text-2xl font-bold text-ink text-center mb-8">How It Works</h2>
         <div className="grid gap-6 md:grid-cols-3">
           <Card variant="feature-pink">
-            <img src={IMAGES.featureScan} alt="" width={120} height={90} className="mb-4 rounded-lg" />
+            <Picture image={IMAGES.featureScan} alt="" width={120} height={90} className="mb-4 rounded-lg" />
             <h3 className="text-xl font-bold mb-2">Scan</h3>
             <p className="text-sm opacity-80">
               Scan any QR code to extract the link and share it instantly with your channel.
@@ -88,7 +88,7 @@ export function HomePage() {
           </Card>
 
           <Card variant="feature-teal">
-            <img src={IMAGES.featureShare} alt="" width={120} height={90} className="mb-4 rounded-lg" />
+            <Picture image={IMAGES.featureShare} alt="" width={120} height={90} className="mb-4 rounded-lg" />
             <h3 className="text-xl font-bold mb-2">Share</h3>
             <p className="text-sm opacity-80">
               Share links through channels. Everyone in the channel receives your links in real-time.
@@ -96,7 +96,7 @@ export function HomePage() {
           </Card>
 
           <Card variant="feature-lavender">
-            <img src={IMAGES.featureOpen} alt="" width={120} height={90} className="mb-4 rounded-lg" />
+            <Picture image={IMAGES.featureOpen} alt="" width={120} height={90} className="mb-4 rounded-lg" />
             <h3 className="text-xl font-bold mb-2">Open</h3>
             <p className="text-sm opacity-80">
               Open received links instantly. Enable auto-open for seamless link navigation.
