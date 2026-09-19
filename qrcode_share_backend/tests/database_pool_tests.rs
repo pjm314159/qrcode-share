@@ -38,7 +38,11 @@ async fn start_postgres_with_timeout(
     String,
 )> {
     use testcontainers::runners::AsyncRunner;
+    use testcontainers::ImageExt;
     use testcontainers_modules::postgres::Postgres;
+
+    // PostgreSQL image used by the pool tests (kept in sync with docker-compose).
+    const POSTGRES_TAG: &str = "19beta3-alpine";
 
     let start_result = tokio::time::timeout(
         Duration::from_secs(60),
@@ -46,6 +50,7 @@ async fn start_postgres_with_timeout(
             .with_db_name(db_name)
             .with_user("test_user")
             .with_password("test_password")
+            .with_tag(POSTGRES_TAG)
             .start(),
     )
     .await;

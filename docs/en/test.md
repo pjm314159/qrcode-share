@@ -38,26 +38,6 @@ running 9 tests   → test result: ok. 9 passed; 0 failed (or skipped)
 running 6 tests   → test result: ok. 6 passed; 0 failed (or skipped)
 ```
 
-### Test Pipeline Verification
-
-**✅ `test-full` 脚本已通过验证**
-
-完整测试流水线 (`scripts/test-full.sh` / `scripts/test-full.ps1`) 已成功运行，包含以下步骤：
-
-```
-Step 1: Build Project          ✅
-Step 2: Start PostgreSQL       ✅ (Docker container)
-Step 3: Run Database Migrations ✅ (sqlx migrate)
-Step 4: Run Tests              ✅
-   ├── Unit tests (100)        ✅
-   ├── Integration tests (10)  ✅
-   ├── WebSocket tests (6)     ✅
-   ├── Migration tests (9)     ✅
-   └── Docker integration (7)  ✅
-Step 5: Test Summary           ✅
-Step 6: Cleanup                ✅
-```
-
 ## Test Execution
 
 ### Quick Tests (No Docker Required)
@@ -73,25 +53,17 @@ cargo test --lib
 ```bash
 # Run all tests including Docker integration tests
 cargo test
-
-# Or use the full test pipeline script (recommended)
-./scripts/test-full.sh                    # Linux/macOS/WSL
-./scripts/test-full.ps1                   # Windows PowerShell
-
-# The full test pipeline:
-#   1. Builds the project
-#   2. Starts PostgreSQL in Docker
-#   3. Runs database migrations
-#   4. Runs all tests (unit + integration + migration + docker)
-#   5. Cleans up Docker containers
 ```
 
-### Docker Environment Management
+### Docker Test Environment
 ```bash
-./scripts/docker-env.ps1 start    # Start test environment
-./scripts/docker-env.ps1 status   # Check environment status
-./scripts/docker-env.ps1 logs     # View logs
-./scripts/docker-env.ps1 stop     # Stop and cleanup
+# Start PostgreSQL for tests
+docker compose -f docker-compose.test.yml up -d
+
+# Check / view logs / stop
+docker compose -f docker-compose.test.yml ps
+docker compose -f docker-compose.test.yml logs
+docker compose -f docker-compose.test.yml down -v
 ```
 
 ---
@@ -468,7 +440,7 @@ RUST_BACKTRACE=1
 ### Testcontainers Configuration
 
 The Docker tests use `testcontainers` with the following settings:
-- PostgreSQL 16 Alpine
+- PostgreSQL 19 beta 3 Alpine, pinned via `.with_tag("19beta3-alpine")` (the crate default is a much older tag)
 - Automatic container lifecycle management
 - Isolated test database per test run
 - Serial test execution to prevent conflicts
@@ -493,7 +465,7 @@ jobs:
     
     services:
       postgres:
-        image: postgres:16-alpine
+        image: postgres:19beta3-alpine
         env:
           POSTGRES_USER: test_user
           POSTGRES_PASSWORD: test_password

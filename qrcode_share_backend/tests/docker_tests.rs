@@ -10,9 +10,13 @@ use axum::http::StatusCode;
 use reqwest::Client;
 use serial_test::serial;
 use testcontainers::runners::AsyncRunner;
+use testcontainers::ImageExt;
 use testcontainers_modules::postgres::Postgres;
 
 use qrcode_share_backend::{build_router, AppState, Config};
+
+/// PostgreSQL image used by the integration tests (kept in sync with docker-compose).
+const POSTGRES_TAG: &str = "19beta3-alpine";
 
 /// Check if Docker is available for testcontainers
 async fn docker_available() -> bool {
@@ -45,6 +49,7 @@ impl TestContext {
                 .with_db_name("qrcode_share_test")
                 .with_user("test_user")
                 .with_password("test_password")
+                .with_tag(POSTGRES_TAG)
                 .start(),
         )
         .await;

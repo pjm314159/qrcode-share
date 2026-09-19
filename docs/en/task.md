@@ -474,36 +474,21 @@
 - [x] Test: Concurrent channel creation
 - [x] Test: Metrics endpoint with database
 
-### 7.5.3 Test Scripts ✅
+### 7.5.3 Test Execution ✅
 
-**Implementation**:
+**Usage** (no wrapper scripts; run cargo / docker compose directly):
 
-- [x] Create `scripts/run-tests.ps1` (PowerShell)
-- [x] Create `scripts/run-tests.sh` (Bash)
-- [x] Create `scripts/quick-test.ps1` for fast iteration
-- [x] Create `scripts/docker-env.ps1` for environment management
-- [x] Create `.env.test` for test environment variables
+```bash
+# Quick tests, no Docker required
+cargo test --lib
 
-**Usage**:
+# Specific test
+cargo test --test integration_tests test_message_flow
 
-```powershell
-# Run tests with testcontainers (recommended)
-./scripts/run-tests.ps1
-
-# Run tests with docker-compose
-./scripts/run-tests.ps1 -Mode docker-compose
-
-# Run specific test
-./scripts/run-tests.ps1 -TestFilter "test_message_flow"
-
-# Quick unit tests (no Docker)
-./scripts/quick-test.ps1
-
-# Manage Docker test environment
-./scripts/docker-env.ps1 start
-./scripts/docker-env.ps1 status
-./scripts/docker-env.ps1 logs
-./scripts/docker-env.ps1 stop
+# Full suite with Docker integration tests, requires Postgres
+docker compose -f docker-compose.test.yml up -d
+cargo test
+docker compose -f docker-compose.test.yml down -v
 ```
 
 ***

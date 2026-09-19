@@ -250,15 +250,15 @@ curl http://localhost/api/wechat/status
 
 ### Service: `postgres`
 
-- **Image**: `postgres:16-alpine`
-- **Volume**: `postgres_data` (persistent)
+- **Image**: `postgres:19beta3-alpine` (PostgreSQL 19 beta)
+- **Volume**: `postgres_data` → mounted at `/var/lib/postgresql` (PG18+ layout: `PGDATA` is `/var/lib/postgresql/19/docker`)
 - **Health check**: `pg_isready`
 - **Resource limits**: 1 CPU, 512MB RAM
 
 ### Service: `migrate`
 
-- **Image**: `postgres:16-alpine`
-- **Purpose**: Runs SQL migrations from `/migrations/`, then exits
+- **Image**: `postgres:19beta3-alpine`
+- **Purpose**: Runs SQL migrations from `/migrations/` with `psql -v ON_ERROR_STOP=1`, then exits
 - **Depends on**: `postgres` (healthy)
 
 ### Service: `backend`

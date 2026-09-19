@@ -19,7 +19,7 @@ Real-time link sharing through QR codes. Create a channel, scan or paste a link,
 | Frontend   | React 19, TypeScript 6, Vite 8, Tailwind CSS 4 |
 | State      | Zustand 5                                      |
 | Backend    | Rust, Axum 0.7, Tokio                          |
-| Database   | PostgreSQL 16                                  |
+| Database   | PostgreSQL 19 (beta)                           |
 | Deployment | Docker Compose                                 |
 
 ## Quick Start
@@ -75,7 +75,6 @@ qrcode_share/
       types/                # TypeScript definitions
       utils/                # Helper functions
   docs/                     # Documentation
-  scripts/                  # Deploy + test scripts
   deploy/                   # Systemd service file
 ```
 
